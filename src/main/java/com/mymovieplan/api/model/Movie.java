@@ -23,4 +23,51 @@ public class Movie {
 	
 	@Column(name="price")
 	private Float price;
+
+	public Movie() {
+		this.id = null;
+	}
+
+	public Movie(String movieName, Integer duration, Float price) {
+		this();
+		this.movieName = movieName;
+		this.duration = duration;
+		this.price = price;
+	}
+
+	public String getMovieName() {
+		return movieName;
+	}
+
+	public void setMovieName(String movieName) {
+		this.movieName = movieName;
+	}
+
+	public Integer getDuration() {
+		return duration;
+	}
+
+	public void setDuration(Integer duration) {
+		this.duration = duration;
+	}
+
+	public Float getPrice() {
+		return price;
+	}
+
+	public void setPrice(Float price) {
+		this.price = price;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	@Override
+	public String toString() {
+		return "Movie [id=" + id + ", movieName=" + movieName + ", duration=" + duration + ", price=" + price + "]";
+	}
+	
+	
+	
 }
