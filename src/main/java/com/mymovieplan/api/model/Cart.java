@@ -17,7 +17,6 @@ public class Cart {
 	private final Long id;
 	
 	@OneToOne
-	@Column(name="user_id")
 	private User user;
 	
 	@Column(name="nums_of_items")

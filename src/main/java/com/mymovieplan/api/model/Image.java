@@ -19,7 +19,6 @@ public class Image {
 	private final Long id;
 	
 	@ManyToOne
-	@Column(name="movie_id")
 	private Movie movie;
 	
 	@Column(name="image")

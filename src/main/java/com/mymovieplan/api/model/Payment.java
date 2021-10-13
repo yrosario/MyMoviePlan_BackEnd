@@ -20,9 +20,8 @@ public class Payment {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private final Long id;
 	
-	@Column(name="user_id")
 	@ManyToOne 
-	private User user;
+	private User user_pmt;
 	
 	@Column(name="card_no")
 	private long cardNo;
@@ -45,11 +44,11 @@ public class Payment {
 	}
 
 	public User getUser() {
-		return user;
+		return user_pmt;
 	}
 
 	public void setUser(User user) {
-		this.user = user;
+		this.user_pmt = user;
 	}
 
 	public long getCardNo() {
@@ -82,7 +81,7 @@ public class Payment {
 
 	@Override
 	public String toString() {
-		return "Payment [id=" + id + ", user=" + user + ", cardNo=" + cardNo + ", exp_date=" + exp_date
+		return "Payment [id=" + id + ", user=" + user_pmt + ", cardNo=" + cardNo + ", exp_date=" + exp_date
 				+ ", cardVendor=" + cardVendor + "]";
 	}
 	

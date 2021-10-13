@@ -17,7 +17,6 @@ public class Description {
 	private final Long id;
 	
 	@ManyToOne
-	@Column(name="movie_id")
 	private Movie movie;
 	
 	@Column(name="description")

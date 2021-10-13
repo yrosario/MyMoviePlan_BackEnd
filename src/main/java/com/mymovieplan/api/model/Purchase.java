@@ -19,7 +19,6 @@ public class Purchase {
 		private final Long id;
 		
 		@ManyToOne
-		@Column(name="user_id")
 		private User user;
 		
 		@Column(name="order_date")
