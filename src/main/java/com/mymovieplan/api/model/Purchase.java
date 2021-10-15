@@ -1,6 +1,8 @@
 package com.mymovieplan.api.model;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -8,6 +10,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -17,6 +20,9 @@ public class Purchase {
 		@Id
 		@GeneratedValue(strategy = GenerationType.AUTO)
 		private final Long id;
+		
+		@OneToMany(mappedBy="purchase")
+		private List<PurchaseItem> purchaseItems = new ArrayList<PurchaseItem>();
 		
 		@ManyToOne
 		private User purchaseUser;
@@ -52,6 +58,22 @@ public class Purchase {
 
 		public Long getId() {
 			return id;
+		}
+
+		public List<PurchaseItem> getPurchaseItems() {
+			return purchaseItems;
+		}
+
+		public void setPurchaseItems(PurchaseItem item) {
+			this.purchaseItems.add(item);S
+		}
+
+		public User getPurchaseUser() {
+			return purchaseUser;
+		}
+
+		public void setPurchaseUser(User purchaseUser) {
+			this.purchaseUser = purchaseUser;
 		}
 
 		@Override

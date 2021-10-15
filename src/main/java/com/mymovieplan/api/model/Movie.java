@@ -1,10 +1,14 @@
 package com.mymovieplan.api.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -14,6 +18,9 @@ public class Movie {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private final Long id;
+	
+	@OneToMany(mappedBy="movie")
+	private List<PurchaseItem> purchaseItems = new ArrayList<PurchaseItem>();
 	
 	@Column(name="movie_name")
 	private String movieName;
@@ -61,6 +68,14 @@ public class Movie {
 
 	public Long getId() {
 		return id;
+	}
+	
+	public List<PurchaseItem> getPurchaseItesm() {
+		return purchaseItems;
+	}
+
+	public void setProductItems( PurchaseItem item) {
+		this.purchaseItems.add(item);
 	}
 
 	@Override
