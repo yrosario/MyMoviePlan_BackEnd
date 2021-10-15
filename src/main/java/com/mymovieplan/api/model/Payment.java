@@ -21,7 +21,7 @@ public class Payment {
 	private final Long id;
 	
 	@ManyToOne 
-	private User user_pmt;
+	private User paymentUser;
 	
 	@Column(name="card_no")
 	private long cardNo;
@@ -44,11 +44,11 @@ public class Payment {
 	}
 
 	public User getUser() {
-		return user_pmt;
+		return paymentUser;
 	}
 
 	public void setUser(User user) {
-		this.user_pmt = user;
+		this.paymentUser = user;
 	}
 
 	public long getCardNo() {
@@ -81,7 +81,7 @@ public class Payment {
 
 	@Override
 	public String toString() {
-		return "Payment [id=" + id + ", user=" + user_pmt + ", cardNo=" + cardNo + ", exp_date=" + exp_date
+		return "Payment [id=" + id + ", user=" + paymentUser + ", cardNo=" + cardNo + ", exp_date=" + exp_date
 				+ ", cardVendor=" + cardVendor + "]";
 	}
 	

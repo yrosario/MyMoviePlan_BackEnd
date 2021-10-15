@@ -17,7 +17,7 @@ public class Cart {
 	private final Long id;
 	
 	@OneToOne
-	private User user;
+	private User cartUser;
 	
 	@Column(name="nums_of_items")
 	private Integer numberOfItems;
@@ -28,15 +28,15 @@ public class Cart {
 
 	public Cart(User user) {
 		this();
-		this.user = user;
+		this.cartUser = user;
 	}
 
 	public User getUser() {
-		return user;
+		return cartUser;
 	}
 
 	public void setUser(User user) {
-		this.user = user;
+		this.cartUser = user;
 	}
 
 	public Long getId() {
@@ -54,7 +54,7 @@ public class Cart {
 
 	@Override
 	public String toString() {
-		return "Cart [id=" + id + ", user=" + user + ", numberOfItems=" + numberOfItems + "]";
+		return "Cart [id=" + id + ", user=" + cartUser + ", numberOfItems=" + numberOfItems + "]";
 	}
 	
 	

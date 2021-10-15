@@ -19,7 +19,7 @@ public class Purchase {
 		private final Long id;
 		
 		@ManyToOne
-		private User user;
+		private User purchaseUser;
 		
 		@Column(name="order_date")
 		private Date orderDate;
@@ -30,16 +30,16 @@ public class Purchase {
 
 		public Purchase(User user, Date orderDate) {
 			this();
-			this.user = user;
+			this.purchaseUser = user;
 			this.orderDate = orderDate;
 		}
 
 		public User getUser() {
-			return user;
+			return purchaseUser;
 		}
 
 		public void setUser(User user) {
-			this.user = user;
+			this.purchaseUser = user;
 		}
 
 		public Date getOrderDate() {
@@ -56,7 +56,7 @@ public class Purchase {
 
 		@Override
 		public String toString() {
-			return "Purchase [id=" + id + ", user=" + user + ", orderDate=" + orderDate + "]";
+			return "Purchase [id=" + id + ", user=" + purchaseUser + ", orderDate=" + orderDate + "]";
 		}
 		
 		

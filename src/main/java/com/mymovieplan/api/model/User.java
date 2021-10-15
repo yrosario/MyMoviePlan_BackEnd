@@ -10,6 +10,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -20,8 +21,14 @@ public class User {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private final Long id;
 	
-	@OneToMany(mappedBy="user_pmt")
+	@OneToMany(mappedBy="paymentUser")
 	private List<Payment> payments = new ArrayList<Payment>();
+
+	@OneToMany(mappedBy="purchaseUser")
+	private List<Purchase> purchases = new ArrayList<Purchase>();
+	
+	@OneToOne
+	private Cart cart;
 	
 	@Column(name="first_name")
 	private String fName;
