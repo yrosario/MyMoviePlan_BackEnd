@@ -65,7 +65,7 @@ public class Purchase {
 		}
 
 		public void setPurchaseItems(PurchaseItem item) {
-			this.purchaseItems.add(item);S
+			this.purchaseItems.add(item);
 		}
 
 		public User getPurchaseUser() {

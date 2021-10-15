@@ -22,6 +22,9 @@ public class Movie {
 	@OneToMany(mappedBy="movie")
 	private List<PurchaseItem> purchaseItems = new ArrayList<PurchaseItem>();
 	
+	@OneToMany(mappedBy="movie")
+	private List<CartItem> cartItems = new ArrayList<CartItem>();
+	
 	@Column(name="movie_name")
 	private String movieName;
 	
@@ -70,12 +73,22 @@ public class Movie {
 		return id;
 	}
 	
-	public List<PurchaseItem> getPurchaseItesm() {
+	public List<PurchaseItem> getPurchaseItems() {
 		return purchaseItems;
 	}
 
 	public void setProductItems( PurchaseItem item) {
 		this.purchaseItems.add(item);
+	}
+	
+
+	public List<CartItem> getCartItems() {
+		return cartItems;
+	}
+
+	public void setCartItems(CartItem item) {
+		this.cartItems.add(item);
+		
 	}
 
 	@Override
