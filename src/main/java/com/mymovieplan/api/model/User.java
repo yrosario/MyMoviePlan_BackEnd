@@ -151,6 +151,39 @@ public class User {
 	public Long getId() {
 		return id;
 	}
+
+	public List<Payment> getPayments() {
+		return payments;
+	}
+
+	public void setPayments(Payment payment) {
+		this.payments.add(payment);
+	}
+
+	public List<Purchase> getPurchases() {
+		return purchases;
+	}
+
+	public void setPurchases(Purchase purchase) {
+		this.purchases.add(purchase);
+	}
+
+	public Cart getCart() {
+		return cart;
+	}
+
+	public void setCart(Cart cart) {
+		this.cart = cart;
+	}
+
+	@Override
+	public String toString() {
+		return "User [id=" + id + ", payments=" + payments + ", purchases=" + purchases + ", cart=" + cart + ", fName="
+				+ fName + ", lName=" + lName + ", address=" + address + ", city=" + city + ", email=" + email
+				+ ", birthday=" + birthday + ", password=" + password + ", role=" + role + ", active=" + active + "]";
+	}
+	
+	
 	
 	
 	

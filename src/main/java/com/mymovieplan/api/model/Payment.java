@@ -78,10 +78,18 @@ public class Payment {
 	public Long getId() {
 		return id;
 	}
+	
+	public User getPaymentUser() {
+		return paymentUser;
+	}
+
+	public void setPaymentUser(User paymentUser) {
+		this.paymentUser = paymentUser;
+	}
 
 	@Override
 	public String toString() {
-		return "Payment [id=" + id + ", user=" + paymentUser + ", cardNo=" + cardNo + ", exp_date=" + exp_date
+		return "Payment [id=" + id + ", paymentUser=" + paymentUser + ", cardNo=" + cardNo + ", exp_date=" + exp_date
 				+ ", cardVendor=" + cardVendor + "]";
 	}
 	

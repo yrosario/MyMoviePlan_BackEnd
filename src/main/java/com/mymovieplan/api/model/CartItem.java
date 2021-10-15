@@ -31,6 +31,10 @@ public class CartItem {
 		this.movie = movie;
 	}
 
+	public Cart getCart() {
+		return cart;
+	}
+
 	public Cart getPurchase() {
 		return cart;
 	}
@@ -50,6 +54,8 @@ public class CartItem {
 	public void setMovie(Movie movie) {
 		this.movie = movie;
 	}
+	
+	
 
 	@Override
 	public String toString() {

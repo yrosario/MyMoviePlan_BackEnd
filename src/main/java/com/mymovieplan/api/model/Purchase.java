@@ -78,7 +78,8 @@ public class Purchase {
 
 		@Override
 		public String toString() {
-			return "Purchase [id=" + id + ", user=" + purchaseUser + ", orderDate=" + orderDate + "]";
+			return "Purchase [id=" + id + ", purchaseItems=" + purchaseItems + ", purchaseUser=" + purchaseUser
+					+ ", orderDate=" + orderDate + "]";
 		}
 		
 		
