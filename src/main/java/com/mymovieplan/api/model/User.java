@@ -18,7 +18,7 @@ import javax.persistence.Table;
 public class User {
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private final Long id;
 	
 	@OneToMany(mappedBy="paymentUser")
@@ -48,7 +48,7 @@ public class User {
 	@Column(name="birthday")
 	private Date birthday;
 	
-	@Column(name="pasword")
+	@Column(name="password")
 	private String password;
 	
 	@Column(name="role")
