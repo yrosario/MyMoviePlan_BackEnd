@@ -14,7 +14,7 @@ public class UserController {
 	@Autowired
 	private UserService userService;
 	
-	@GetMapping(path = "/get-user/{id}")
+	@GetMapping(path = "/user/{id}")
 	public User getUser(@PathVariable("id") Long id){
 		return userService.getUser(id);
 	}
