@@ -6,12 +6,15 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name="purchase")
@@ -21,10 +24,11 @@ public class Purchase {
 		@GeneratedValue(strategy = GenerationType.AUTO)
 		private final Long id;
 		
-		@OneToMany(mappedBy="purchase")
+		@OneToMany(mappedBy="purchase", fetch=FetchType.LAZY)
+		@JsonIgnore
 		private List<PurchaseItem> purchaseItems = new ArrayList<PurchaseItem>();
 		
-		@ManyToOne
+		@ManyToOne(fetch=FetchType.LAZY)
 		private User purchaseUser;
 		
 		@Column(name="order_date")

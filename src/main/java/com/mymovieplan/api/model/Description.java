@@ -2,6 +2,7 @@ package com.mymovieplan.api.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -16,7 +17,7 @@ public class Description {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private final Long id;
 	
-	@ManyToOne
+	@ManyToOne(fetch=FetchType.LAZY)
 	private Movie movie;
 	
 	@Column(name="description")

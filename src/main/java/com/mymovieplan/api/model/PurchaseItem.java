@@ -1,6 +1,7 @@
 package com.mymovieplan.api.model;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -15,10 +16,10 @@ public class PurchaseItem {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private final Long id;
 	
-	@ManyToOne
+	@ManyToOne(fetch=FetchType.LAZY)
 	private Purchase purchase;
 	
-	@ManyToOne
+	@ManyToOne(fetch=FetchType.LAZY)
 	private Movie movie;
 
 	public PurchaseItem() {

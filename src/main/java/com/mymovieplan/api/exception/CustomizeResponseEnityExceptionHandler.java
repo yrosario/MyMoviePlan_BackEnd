@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+
+
 @ControllerAdvice
 @RestController
 public class CustomizeResponseEnityExceptionHandler extends ResponseEntityExceptionHandler {
@@ -20,7 +22,7 @@ public class CustomizeResponseEnityExceptionHandler extends ResponseEntityExcept
 		ExceptionResponse exceptionResponse = 
 				new ExceptionResponse(new Date(), ex.getMessage(), request.getDescription(false));
 		
-		return new ResponseEntity(exceptionResponse, HttpStatus.INTERNAL_SERVER_ERROR);
+		return new ResponseEntity<Object>(exceptionResponse, HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 	
 	@ExceptionHandler(UserNotFoundException.class)
@@ -29,6 +31,6 @@ public class CustomizeResponseEnityExceptionHandler extends ResponseEntityExcept
 		ExceptionResponse exceptionResponse = 
 				new ExceptionResponse(new Date(), ex.getMessage(), request.getDescription(false));
 		
-		return new ResponseEntity(exceptionResponse, HttpStatus.NOT_FOUND);
+		return new ResponseEntity<Object>(exceptionResponse, HttpStatus.NOT_FOUND);
 	}
 }
