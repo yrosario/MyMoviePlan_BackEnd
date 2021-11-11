@@ -4,8 +4,10 @@ import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -13,21 +15,25 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "user")
 public class User {
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private final Long id;
 	
-	@OneToMany(mappedBy="paymentUser")
+	@OneToMany(mappedBy="paymentUser", fetch=FetchType.LAZY)
+	@JsonIgnore
 	private List<Payment> payments = new ArrayList<Payment>();
 
 	@OneToMany(mappedBy="purchaseUser")
 	private List<Purchase> purchases = new ArrayList<Purchase>();
 	
-	@OneToOne
+	@OneToOne(cascade = {CascadeType.ALL}, fetch=FetchType.LAZY)
+	@JsonIgnore
 	private Cart cart;
 	
 	@Column(name="first_name")
@@ -48,7 +54,7 @@ public class User {
 	@Column(name="birthday")
 	private Date birthday;
 	
-	@Column(name="pasword")
+	@Column(name="password")
 	private String password;
 	
 	@Column(name="role")
@@ -60,6 +66,8 @@ public class User {
 	public User() {
 		this.id = null;
 		active = true;
+		this.cart = new Cart();
+		this.cart.setCartUser(this);
 	}
 
 	public User(String fName, String lName, String address, String city, String email, 
@@ -74,6 +82,7 @@ public class User {
 		this.password = password;
 		this.role = role;
 		this.active = active;
+		
 	}
 
 	public String getfName() {
@@ -172,9 +181,6 @@ public class User {
 		return cart;
 	}
 
-	public void setCart(Cart cart) {
-		this.cart = cart;
-	}
 
 	@Override
 	public String toString() {

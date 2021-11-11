@@ -1,11 +1,14 @@
 package com.mymovieplan.api.model;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name="cart_item")
@@ -15,10 +18,11 @@ public class CartItem {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private final Long id;
 	
-	@ManyToOne
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JsonIgnore
 	private Cart cart;
 	
-	@ManyToOne
+	@ManyToOne(fetch=FetchType.LAZY)
 	private Movie movie;
 
 	public CartItem() {

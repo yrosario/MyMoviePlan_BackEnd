@@ -5,12 +5,16 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name="Cart")
@@ -20,10 +24,12 @@ public class Cart {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private final Long id;
 	
-	@OneToOne
+	@OneToOne(fetch=FetchType.LAZY)
+	@JsonIgnore
 	private User cartUser;
 	
-	@OneToMany(mappedBy="cart")
+	@OneToMany(mappedBy="cart", fetch=FetchType.LAZY)
+    @JsonIgnore
 	private List<CartItem> cartItems = new ArrayList<CartItem>();
 	
 	@Column(name="nums_of_items")
