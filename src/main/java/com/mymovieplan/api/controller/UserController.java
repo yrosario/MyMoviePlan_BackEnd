@@ -1,161 +1,120 @@
 package com.mymovieplan.api.controller;
 
-import java.net.URI;
+
+import java.util.HashMap;
 import java.util.List;
-import java.util.Optional;
+
+
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import com.mymovieplan.api.exception.UserNotFoundException;
-import com.mymovieplan.api.model.Cart;
-import com.mymovieplan.api.model.CartItem;
-import com.mymovieplan.api.model.Movie;
-import com.mymovieplan.api.model.Payment;
-import com.mymovieplan.api.model.Purchase;
+
 import com.mymovieplan.api.model.User;
-import com.mymovieplan.api.repository.MovieRepository;
-import com.mymovieplan.api.repository.PaymentRepository;
-import com.mymovieplan.api.service.CartItemService;
-import com.mymovieplan.api.service.CartService;
-import com.mymovieplan.api.service.PaymentService;
-import com.mymovieplan.api.service.PurchaseService;
 import com.mymovieplan.api.service.UserService;
 
 @RestController
+@RequestMapping("/user")
 public class UserController {
+	
+	@Autowired
+	private BCryptPasswordEncoder bCryptPasswordEncoder;
 	
 	@Autowired
 	private UserService userService;
 	
-	@Autowired
-	private PurchaseService purchaseService;
-	
-	@Autowired
-	private CartItemService cartItemService;
-	
-	@Autowired
-	private CartService cartService;
-	
-	@Autowired
-	private MovieRepository movieRepository;
-	
-	@Autowired
-	private PaymentRepository paymentRepository;
-	
-	
-	
-	
-	@GetMapping(path = "/user/{id}")
-	public User getUser(@PathVariable("id") Long id){
+	@GetMapping("/list")
+	public ResponseEntity<?> getUserList(){
 		
-		Optional<User> user = userService.findById(id);
-		if(user.isEmpty())
-			throw new UserNotFoundException("id: -" +id);
-		return user.get();
-	}
-	
-	@GetMapping(path = "/user")
-	public List<User> getAllUsers(){
-		return userService.findAll();
-	}
-	
-	@PostMapping(path = "/user")
-	public ResponseEntity<Object> addUser(@RequestBody User user) {
+		List<User> users = userService.findAll();
+		if(users.isEmpty())
+			return new ResponseEntity<>("No User Found", HttpStatus.OK);
 		
-		User saveUser = userService.save(user);
-		
-		URI location = ServletUriComponentsBuilder
-				.fromCurrentRequest()
-				.path("/{id}").
-				buildAndExpand(saveUser.getId())
-				.toUri();
-				   
-		return ResponseEntity.created(location).build();
-	}
-	
-	@GetMapping(path = "/user/{id}/purchase")
-	public List<Purchase> getAllPurchases(@PathVariable("id") Long id){
-		
-		return userService.findAllPurchases(id);
-	}
-	
-	@PostMapping(path = "/user/{id}/purchase")
-	public  void addPurchase(@PathVariable Long id, @RequestBody Purchase purchase){
-		
-		Optional<User> saveUser = userService.findById(id);
-		
-		if(saveUser.isEmpty())
-			throw new UserNotFoundException("id: -" +id);
-		
-		saveUser.get().setPurchases(purchase);
-		purchaseService.save(purchase);
+		return new ResponseEntity<>(users, HttpStatus.OK);
 		
 	}
 	
-	@GetMapping(path = "/user/{id}/cart")
-	public List<CartItem> getCartItems(@PathVariable("id") Long id){
-	
-		Optional<User> user = userService.findById(id);
-		if(user.isEmpty())
-			throw new UserNotFoundException("id: -" + id);
+	@GetMapping("/{username}")
+	public ResponseEntity<?> getUser(@PathVariable("username") String username){
 		
-		return user.get().getCart().getCartItems();
+		User user = userService.findUserByUserName(username);
+		if(user == null)
+			return new ResponseEntity<>("No User Found", HttpStatus.OK);
+		
+		return new ResponseEntity<>(user, HttpStatus.OK);
 	}
 	
-	@PostMapping(path = "/user/{id}/cart")
-	public void addItemToCart(@PathVariable("id") Long id, @Validated @RequestBody CartItem cartItem) {
+	@PostMapping("register")
+	public ResponseEntity<?> register(@RequestBody User user){
+		if(userService.findUserByUserName(user.getEmail()) != null)
+				return new ResponseEntity<>("User Already Exist", HttpStatus.CONFLICT);
 		
-		//cartItem = cartItemService.save(cartItem);
-		
-		//retrieve user
-		Optional<User> user = userService.findById(id);
-		if(user.isEmpty())
-			throw new UserNotFoundException("id: -" +id);
-		
-		
-		//get the cart that belongs to the user
-		Cart cart = user.get().getCart();
-		//add item to cart
-		cart.setCartItems(cartItem);
-		//save cart
-		cartService.save(cart);
-		//set cart
-		
-		
-		//cartItem.setMovie(movie);
-		cartItem.setCart(cart);
-		cartItemService.save(cartItem);
-				
+		userService.save(user);
+		return new ResponseEntity<>("User Has been Created", HttpStatus.CREATED);
 	}
 	
-	@GetMapping("/user/{id}/payment")
-	public List<Payment> getUserPayment(@PathVariable("id") Long id) {
+	
+	@PutMapping("/update")
+	public ResponseEntity<?> updateUser(@RequestBody User user){
+		User retriveUser = userService.findUserById(user.getId());
+		if(retriveUser == null)
+			return new ResponseEntity<>("No User Found", HttpStatus.NOT_FOUND);
 		
-		List<Payment> payments = userService.findById(id).get().getPayments();
+		userService.save(user);
+		return new ResponseEntity<>(user, HttpStatus.OK);
+	}
+	
+	@PostMapping("change_password")
+	public ResponseEntity<String> changePassword(@RequestBody HashMap<String, String> request){
 		
-		return payments;
+		String username = request.get("username");
+		User user = userService.findUserByUserName(username);
+		
+		if(user == null)
+			return new ResponseEntity<>("User not found", HttpStatus.BAD_REQUEST);
+		
+		String currentPassword = request.get("currentPassword");
+		String newPassword = request.get("newPassword");
+		String confirmPassword = request.get("confirmPassword");
+		
+		if(!newPassword.equals(confirmPassword))
+			return new ResponseEntity<>("Password does not match", HttpStatus.BAD_REQUEST);
+		
+		String userPassword = user.getPassword();
+		try {
+			if (newPassword != null && !newPassword.isEmpty()) {
+				if (bCryptPasswordEncoder.matches(currentPassword, userPassword)) {
+					userService.updateUserPassword(user, newPassword);
+				}else {
+					return new ResponseEntity<>("Incorrect Current Password", HttpStatus.BAD_REQUEST);
+				}
+			} 
+			return new ResponseEntity<>(userPassword, HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity<>("Error Occured: " + e.getMessage(), HttpStatus.BAD_REQUEST);
+		}
 		
 	}
 	
-	@PostMapping("/user/{id}/payment")
-	public void addPayment(@PathVariable("id") Long id, @RequestBody Payment payment) {
+	@DeleteMapping("/delete")
+	public ResponseEntity<String> deleteUser(@RequestBody HashMap<String, String> request){
+		User user = userService.findUserByUserName(request.get("username"));
+		if(user == null)
+			return new ResponseEntity<>("User " + request.get("username") + "was not found", HttpStatus.BAD_REQUEST);
 		
-		Optional<User> user = userService.findById(id);
+		userService.deleteUser(request.get("username"));
 		
-		if(user.isEmpty())
-			throw new UserNotFoundException("id: -" + id);
-		
-		user.get().setPayments(payment);
-		userService.save(user.get());
-		payment.setUser(user.get());
-		paymentRepository.save(payment);
+		return new ResponseEntity<>("User " + request.get("username") + "has been succesfully deleted", HttpStatus.OK );
 	}
+
 }
