@@ -16,7 +16,7 @@ import javax.persistence.Table;
 public class Movie {
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private final Long id;
 	
 	@OneToMany(mappedBy="movie")
