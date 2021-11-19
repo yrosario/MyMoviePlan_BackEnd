@@ -9,9 +9,11 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 @Entity
 @Table(name="cart_item")
+@JsonSerialize 
 public class CartItem {
 	
 	@Id
@@ -22,7 +24,7 @@ public class CartItem {
 	@JsonIgnore
 	private Cart cart;
 	
-	@ManyToOne(fetch=FetchType.LAZY)
+	@ManyToOne(fetch=FetchType.EAGER)
 	private Movie movie;
 
 	public CartItem() {
@@ -35,10 +37,12 @@ public class CartItem {
 		this.movie = movie;
 	}
 
+	
 	public Cart getCart() {
 		return cart;
 	}
 
+	@JsonIgnore
 	public Cart getPurchase() {
 		return cart;
 	}
@@ -51,6 +55,7 @@ public class CartItem {
 		return id;
 	}
 	
+	
 	public Movie getMovie() {
 		return movie;
 	}
@@ -58,7 +63,6 @@ public class CartItem {
 	public void setMovie(Movie movie) {
 		this.movie = movie;
 	}
-	
 	
 
 	@Override

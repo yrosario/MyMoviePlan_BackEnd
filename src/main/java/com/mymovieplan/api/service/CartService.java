@@ -10,6 +10,9 @@ public interface CartService {
 	public List<CartItem> getAllItems();
 	public void saveCartItem(CartItem cartItem);
 	public Cart save(Cart save);
+	public Cart findAllCartItemsByUserId(Long id);
+	public void removeCartItemById(Cart cart);
+
 	
 
 }
