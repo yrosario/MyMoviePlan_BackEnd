@@ -25,6 +25,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
          .antMatchers(HttpMethod.DELETE,"/movie/delete").permitAll()
          .antMatchers(HttpMethod.GET,"/cart/user/**").permitAll()
          .antMatchers(HttpMethod.POST,"/cart/user/**").permitAll()
+         .antMatchers(HttpMethod.DELETE,"/cart/**/").permitAll()
         .anyRequest().authenticated();
     }
 }

@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -91,17 +92,30 @@ public class CartController {
 		if(cart == null)
 			return new ResponseEntity<>("Cart not found", HttpStatus.NOT_FOUND);
 		
-		Long movieId = request.get("movieId");
 		
-		if(movieId == null)
+		Long cartId = request.get("cartId");
+		
+		if(cartId == null)
 			return new ResponseEntity<>("Invalid data passed", HttpStatus.BAD_REQUEST);
 		
-		
-		cartService.removeCartItemById(cart);
+		cartService.removeCartItemById(cartId,cart);
 		
 		
 		return new ResponseEntity<>("Sucecss", HttpStatus.OK);
 	}
+	
+	
+	@PutMapping("/user/{id}")
+	public ResponseEntity<?>updateCartItem(@PathVariable("id") Long id, @RequestBody CartItem cartItem){
+		
+		if(cartService.findAllCartItemsByUserId(cartItem.getId()) == null)
+			return new ResponseEntity<>("Cart item not found", HttpStatus.NOT_FOUND);
+		
+		cartItemService.save(cartItem);
+		return new ResponseEntity<>("Cart item update", HttpStatus.OK);
+			
+	}
+	
 	
 
 }
