@@ -8,4 +8,5 @@ public interface PurchaseService {
 	
 	public List<Purchase> findAll();
 	public Purchase save(Purchase purcharse);
+	public void deletePurchaseByPurchaseId(Long purchaseId);
 }

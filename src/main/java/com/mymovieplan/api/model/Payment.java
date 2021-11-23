@@ -47,6 +47,7 @@ public class Payment {
 		this.cardVendor = cardVendor;
 	}
 
+	@JsonIgnore
 	public User getUser() {
 		return paymentUser;
 	}
@@ -83,6 +84,7 @@ public class Payment {
 		return id;
 	}
 	
+	@JsonIgnore
 	public User getPaymentUser() {
 		return paymentUser;
 	}

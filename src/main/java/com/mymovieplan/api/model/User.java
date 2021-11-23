@@ -29,7 +29,8 @@ public class User {
 	@JsonIgnore
 	private List<Payment> payments = new ArrayList<Payment>();
 
-	@OneToMany(mappedBy="purchaseUser")
+	@OneToMany(mappedBy="purchaseUser", fetch=FetchType.LAZY)
+	@JsonIgnore
 	private List<Purchase> purchases = new ArrayList<Purchase>();
 	
 	@OneToOne(cascade = {CascadeType.ALL}, fetch=FetchType.LAZY)

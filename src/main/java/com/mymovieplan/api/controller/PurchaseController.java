@@ -1,7 +1,8 @@
 package com.mymovieplan.api.controller;
 
+import java.util.Date;
 import java.util.HashMap;
-
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,30 +16,32 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.mymovieplan.api.model.Cart;
-import com.mymovieplan.api.model.CartItem;
 import com.mymovieplan.api.model.Movie;
+import com.mymovieplan.api.model.Purchase;
+import com.mymovieplan.api.model.PurchaseItem;
 import com.mymovieplan.api.model.User;
-import com.mymovieplan.api.service.CartItemService;
-import com.mymovieplan.api.service.CartService;
 import com.mymovieplan.api.service.MovieService;
+import com.mymovieplan.api.service.PurchaseItemService;
+import com.mymovieplan.api.service.PurchaseService;
 import com.mymovieplan.api.service.UserService;
 
 @RestController()
-@RequestMapping("/cart")
-public class CartController {
+@RequestMapping("/purchase")
+public class PurchaseController {
 	
 	@Autowired
-	private CartService cartService;
+	private PurchaseService purchaseService;
 	
 	@Autowired 
 	private UserService userService;
 	
 	@Autowired
 	private MovieService movieService;
+
 	
 	@Autowired
-	private CartItemService cartItemService;
+	private PurchaseItemService purchaseItemService;
+	
 	
 	@GetMapping("/user/{id}")
 	public ResponseEntity<?> getCartItem(@PathVariable("id") Long id){
@@ -48,12 +51,12 @@ public class CartController {
 			return new ResponseEntity<String>("User not found", HttpStatus.NOT_FOUND);
 
 		
-		Cart cart = user.getCart();
+		List<Purchase> purchases = user.getPurchases();
 		
-		if(cart == null)
-			return new ResponseEntity<String>("Cart not found", HttpStatus.NOT_FOUND);
+		if(purchases.isEmpty())
+			return new ResponseEntity<String>("No Purchases found", HttpStatus.OK);
 		
-		return new ResponseEntity<>(user.getCart().getCartItems(), HttpStatus.OK);
+		return new ResponseEntity<>(user.getPurchases(), HttpStatus.OK);
 	}
 	
 	@PostMapping("/user/{id}")
@@ -62,8 +65,8 @@ public class CartController {
 		if(user == null)
 			return new ResponseEntity<>("User not found", HttpStatus.NOT_FOUND);
 		
-		Cart cart = user.getCart();
-		if(cart == null)
+		List<Purchase> purchases = user.getPurchases();
+		if(purchases.isEmpty())
 			return new ResponseEntity<>("Cart not found", HttpStatus.NOT_FOUND);
 		
 		Long movieId = request.get("movieId");
@@ -72,10 +75,12 @@ public class CartController {
 			return new ResponseEntity<>("Invalid data passed", HttpStatus.BAD_REQUEST);
 		
 		Movie movie = movieService.findMovieById(movieId);
-		
-		CartItem cartItem = new CartItem(cart, movie);
-		cartService.save(cart);
-		cartItemService.save(cartItem);
+		Purchase purchase = new Purchase(user, new Date());
+		PurchaseItem purchaseItem = new PurchaseItem(purchase, movie);
+		purchases.add(purchase);
+		userService.save(user);
+		purchaseService.save(purchase);
+		purchaseItemService.save(purchaseItem);
 		
 		
 		return new ResponseEntity<>(movie, HttpStatus.OK);
@@ -87,17 +92,12 @@ public class CartController {
 		if(user == null)
 			return new ResponseEntity<>("User not found", HttpStatus.NOT_FOUND);
 		
-		Cart cart = user.getCart();
-		if(cart == null)
-			return new ResponseEntity<>("Cart not found", HttpStatus.NOT_FOUND);
+		Long purchaseId = request.get("purchaseId");
 		
-		
-		Long cartId = request.get("cartId");
-		
-		if(cartId == null)
+		if(purchaseId == null)
 			return new ResponseEntity<>("Invalid data passed", HttpStatus.BAD_REQUEST);
 		
-		cartService.removeCartItemById(cartId,cart);
+		purchaseService.deletePurchaseByPurchaseId(purchaseId);
 		
 		
 		return new ResponseEntity<>("Sucecss", HttpStatus.OK);
@@ -105,13 +105,28 @@ public class CartController {
 	
 	
 	@PutMapping("/user/{id}")
-	public ResponseEntity<?>updateCartItem(@PathVariable("id") Long id, @RequestBody CartItem cartItem){
+	public ResponseEntity<?>updateCartItem(@PathVariable("id") Long id, @RequestBody HashMap<String, Long> request){
 		
-		if(cartService.findAllCartItemsByUserId(cartItem.getId()) == null)
-			return new ResponseEntity<>("Cart item not found", HttpStatus.NOT_FOUND);
+		Long purchaseItemId = request.get("purchaseItemId");
+		if(purchaseItemId == null)
+			return new ResponseEntity<>("Bad parameter passed", HttpStatus.BAD_REQUEST);
 		
-		cartItemService.save(cartItem);
-		return new ResponseEntity<>("Cart item update", HttpStatus.OK);
+		PurchaseItem purchaseItem = purchaseItemService.findById(purchaseItemId);
+		if(purchaseItem == null)
+			return new ResponseEntity<>("No purchase found", HttpStatus.OK);
+		
+		Long movieId = request.get("movieId");
+		if(movieId == null)
+			return new ResponseEntity<>("Bad parameter passed", HttpStatus.BAD_REQUEST);
+		
+		Movie movie = movieService.findMovieById(purchaseItemId);
+		if(movie == null)
+			return new ResponseEntity<>("No moive found", HttpStatus.OK);
+		
+		
+		purchaseItem.setMovie(movie);
+		purchaseItemService.save(purchaseItem);
+		return new ResponseEntity<>("Purchase item update", HttpStatus.OK);
 			
 	}
 	
