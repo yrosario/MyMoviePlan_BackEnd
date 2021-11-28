@@ -3,6 +3,7 @@ package com.mymovieplan.api.service;
 import java.util.List;
 
 import com.mymovieplan.api.model.CartItem;
+import com.mymovieplan.api.model.Payment;
 import com.mymovieplan.api.model.Purchase;
 import com.mymovieplan.api.model.User;
 
@@ -16,5 +17,6 @@ public interface UserService {
 	public List<CartItem> findAllCartItems(Long id);
 	public void updateUserPassword(User user, String newPassword);
 	public void deleteUser(String username);
+	public Payment findPaymentById(Long paymentId, List<Payment> payments);
 
 }

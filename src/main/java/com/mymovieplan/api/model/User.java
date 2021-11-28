@@ -29,7 +29,8 @@ public class User {
 	@JsonIgnore
 	private List<Payment> payments = new ArrayList<Payment>();
 
-	@OneToMany(mappedBy="purchaseUser")
+	@OneToMany(mappedBy="purchaseUser", fetch=FetchType.LAZY)
+	@JsonIgnore
 	private List<Purchase> purchases = new ArrayList<Purchase>();
 	
 	@OneToOne(cascade = {CascadeType.ALL}, fetch=FetchType.LAZY)
@@ -165,7 +166,7 @@ public class User {
 		return payments;
 	}
 
-	public void setPayments(Payment payment) {
+	public void setPayment(Payment payment) {
 		this.payments.add(payment);
 	}
 
@@ -173,7 +174,7 @@ public class User {
 		return purchases;
 	}
 
-	public void setPurchases(Purchase purchase) {
+	public void setPurchase(Purchase purchase) {
 		this.purchases.add(purchase);
 	}
 

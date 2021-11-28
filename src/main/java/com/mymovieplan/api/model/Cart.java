@@ -37,6 +37,7 @@ public class Cart {
 
 	public Cart() {
 		this.id = null;
+		this.numberOfItems=0;
 	}
 
 	public Cart(User user) {
@@ -74,12 +75,18 @@ public class Cart {
 		this.cartUser = cartUser;
 	}
 
+	@JsonIgnore
 	public List<CartItem> getCartItems() {
 		return cartItems;
 	}
 
 	public void setCartItems(CartItem item) {
 		this.cartItems.add(item);
+		
+		if(this.numberOfItems ==null)
+			this.numberOfItems = 0;
+		
+		this.numberOfItems++;
 	}
 
 	@Override

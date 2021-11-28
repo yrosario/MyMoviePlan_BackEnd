@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -24,11 +25,11 @@ public class Purchase {
 		@GeneratedValue(strategy = GenerationType.AUTO)
 		private final Long id;
 		
-		@OneToMany(mappedBy="purchase", fetch=FetchType.LAZY)
-		@JsonIgnore
+		@OneToMany(mappedBy="purchase", fetch=FetchType.LAZY, cascade = CascadeType.REMOVE, orphanRemoval = true)
 		private List<PurchaseItem> purchaseItems = new ArrayList<PurchaseItem>();
 		
 		@ManyToOne(fetch=FetchType.LAZY)
+		@JsonIgnore
 		private User purchaseUser;
 		
 		@Column(name="order_date")
@@ -72,6 +73,7 @@ public class Purchase {
 			this.purchaseItems.add(item);
 		}
 
+		@JsonIgnore
 		public User getPurchaseUser() {
 			return purchaseUser;
 		}

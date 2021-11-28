@@ -8,6 +8,8 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name="purchase_item")
 public class PurchaseItem {
@@ -17,9 +19,10 @@ public class PurchaseItem {
 	private final Long id;
 	
 	@ManyToOne(fetch=FetchType.LAZY)
+	@JsonIgnore
 	private Purchase purchase;
 	
-	@ManyToOne(fetch=FetchType.LAZY)
+	@ManyToOne(fetch=FetchType.EAGER)
 	private Movie movie;
 
 	public PurchaseItem() {
@@ -32,6 +35,7 @@ public class PurchaseItem {
 		this.movie = movie;
 	}
 
+	@JsonIgnore
 	public Purchase getPurchase() {
 		return purchase;
 	}

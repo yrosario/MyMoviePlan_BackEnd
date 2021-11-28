@@ -11,6 +11,9 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
 @Entity
 @Table(name="movie")
 public class Movie {
@@ -20,9 +23,11 @@ public class Movie {
 	private final Long id;
 	
 	@OneToMany(mappedBy="movie")
+	@JsonIgnore
 	private List<PurchaseItem> purchaseItems = new ArrayList<PurchaseItem>();
 	
 	@OneToMany(mappedBy="movie")
+	@JsonIgnore
 	private List<CartItem> cartItems = new ArrayList<CartItem>();
 	
 	@Column(name="movie_name")
@@ -73,19 +78,22 @@ public class Movie {
 		return id;
 	}
 	
+	@JsonIgnore
 	public List<PurchaseItem> getPurchaseItems() {
 		return purchaseItems;
 	}
-
+    
+	@JsonIgnore
 	public void setProductItems( PurchaseItem item) {
 		this.purchaseItems.add(item);
 	}
 	
-
+	@JsonIgnore
 	public List<CartItem> getCartItems() {
 		return cartItems;
 	}
 
+	@JsonIgnore
 	public void setCartItems(CartItem item) {
 		this.cartItems.add(item);
 		
