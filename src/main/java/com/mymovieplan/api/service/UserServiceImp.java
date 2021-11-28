@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import com.mymovieplan.api.model.Cart;
 import com.mymovieplan.api.model.CartItem;
+import com.mymovieplan.api.model.Payment;
 import com.mymovieplan.api.model.Purchase;
 import com.mymovieplan.api.model.User;
 import com.mymovieplan.api.repository.UserRepository;
@@ -104,6 +105,17 @@ public class UserServiceImp implements UserService {
 			userRepository.delete(user);
 		
 	}
+
+	@Override
+	public Payment findPaymentById(Long paymentId, List<Payment> payments) {
+		for(Payment payment:payments)
+			if(payment.getId() == paymentId)
+				return payment;
+		
+		return null;
+	}
+
+
 	
 	
 

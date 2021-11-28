@@ -166,7 +166,7 @@ public class User {
 		return payments;
 	}
 
-	public void setPayments(Payment payment) {
+	public void setPayment(Payment payment) {
 		this.payments.add(payment);
 	}
 
@@ -174,7 +174,7 @@ public class User {
 		return purchases;
 	}
 
-	public void setPurchases(Purchase purchase) {
+	public void setPurchase(Purchase purchase) {
 		this.purchases.add(purchase);
 	}
 
