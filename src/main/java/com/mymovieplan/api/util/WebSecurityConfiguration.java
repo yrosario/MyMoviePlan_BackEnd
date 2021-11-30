@@ -34,6 +34,11 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
          .antMatchers(HttpMethod.POST,"/payment/user/**").permitAll()
          .antMatchers(HttpMethod.DELETE,"/payment/user/**").permitAll()
          .antMatchers(HttpMethod.PUT,"/payment/user/**").permitAll()
+         .antMatchers(HttpMethod.GET,"/category").permitAll()
+         .antMatchers(HttpMethod.POST,"/category").permitAll()
+         .antMatchers(HttpMethod.GET,"/category/**").permitAll()
+         .antMatchers(HttpMethod.PUT,"/category").permitAll()
+         .antMatchers(HttpMethod.DELETE,"/category").permitAll()
         .anyRequest().authenticated();
     }
 }

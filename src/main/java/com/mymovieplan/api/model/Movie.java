@@ -8,11 +8,12 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
 
 @Entity
 @Table(name="movie")
@@ -29,6 +30,9 @@ public class Movie {
 	@OneToMany(mappedBy="movie")
 	@JsonIgnore
 	private List<CartItem> cartItems = new ArrayList<CartItem>();
+	
+	@ManyToOne
+	private Category category;
 	
 	@Column(name="movie_name")
 	private String movieName;
@@ -97,6 +101,15 @@ public class Movie {
 	public void setCartItems(CartItem item) {
 		this.cartItems.add(item);
 		
+	}
+	
+
+	public Category getCategory() {
+		return category;
+	}
+
+	public void setCategory(Category category) {
+		this.category = category;
 	}
 
 	@Override
