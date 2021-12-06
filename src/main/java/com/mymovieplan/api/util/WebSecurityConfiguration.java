@@ -19,10 +19,15 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
          .antMatchers(HttpMethod.POST,"/user/change_password").permitAll()
          .antMatchers(HttpMethod.DELETE,"/user/delete").permitAll()
          .antMatchers(HttpMethod.GET,"/movie/list").permitAll()
-         .antMatchers(HttpMethod.GET,"/movie/{id}").permitAll()
+         .antMatchers(HttpMethod.GET,"/movie/**").permitAll()
+         .antMatchers(HttpMethod.GET,"/movie/**/desc").permitAll()
+         .antMatchers(HttpMethod.POST,"/movie/**/desc").permitAll()
+         .antMatchers(HttpMethod.PUT,"/movie/**/desc").permitAll()
          .antMatchers(HttpMethod.POST,"/movie/add").permitAll()
          .antMatchers(HttpMethod.PUT,"/movie/update").permitAll()
          .antMatchers(HttpMethod.DELETE,"/movie/delete").permitAll()
+         .antMatchers(HttpMethod.POST,"/movie/**/upload").permitAll()
+         .antMatchers(HttpMethod.GET,"/movie/**/upload").permitAll()
         .anyRequest().authenticated();
     }
 }

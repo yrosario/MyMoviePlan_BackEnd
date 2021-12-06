@@ -9,7 +9,10 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name="movie")
@@ -25,6 +28,14 @@ public class Movie {
 	@OneToMany(mappedBy="movie")
 	private List<CartItem> cartItems = new ArrayList<CartItem>();
 	
+	@OneToMany(mappedBy="movie")
+	@JsonIgnore
+	private List<Image> images = new ArrayList<Image>();
+	
+	@OneToOne
+	@JsonIgnore
+	private Description description;
+	
 	@Column(name="movie_name")
 	private String movieName;
 	
@@ -36,6 +47,7 @@ public class Movie {
 
 	public Movie() {
 		this.id = null;
+		this.description = new Description();
 	}
 
 	public Movie(String movieName, Integer duration, Float price) {
@@ -89,6 +101,24 @@ public class Movie {
 	public void setCartItems(CartItem item) {
 		this.cartItems.add(item);
 		
+	}
+	
+
+	public Description getDescription() {
+		return description;
+	}
+
+	public void setDescription(Description description) {
+		this.description = description;
+	}
+	
+
+	public List<Image> getImages() {
+		return images;
+	}
+
+	public void setImages(Image image) {
+		this.images.add(image);
 	}
 
 	@Override
