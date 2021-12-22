@@ -20,6 +20,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
          .antMatchers(HttpMethod.DELETE,"/user/delete").permitAll()
          .antMatchers(HttpMethod.GET,"/movie/list").permitAll()
          .antMatchers(HttpMethod.GET,"/movie/**").permitAll()
+<<<<<<< HEAD
          .antMatchers(HttpMethod.POST,"/movie/add").permitAll()
          .antMatchers(HttpMethod.PUT,"/movie/update").permitAll()
          .antMatchers(HttpMethod.DELETE,"/movie/delete").permitAll()
@@ -39,6 +40,16 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
          .antMatchers(HttpMethod.GET,"/category/**").permitAll()
          .antMatchers(HttpMethod.PUT,"/category").permitAll()
          .antMatchers(HttpMethod.DELETE,"/category").permitAll()
+=======
+         .antMatchers(HttpMethod.GET,"/movie/**/desc").permitAll()
+         .antMatchers(HttpMethod.POST,"/movie/**/desc").permitAll()
+         .antMatchers(HttpMethod.PUT,"/movie/**/desc").permitAll()
+         .antMatchers(HttpMethod.POST,"/movie/add").permitAll()
+         .antMatchers(HttpMethod.PUT,"/movie/update").permitAll()
+         .antMatchers(HttpMethod.DELETE,"/movie/delete").permitAll()
+         .antMatchers(HttpMethod.POST,"/movie/**/upload").permitAll()
+         .antMatchers(HttpMethod.GET,"/movie/**/upload").permitAll()
+>>>>>>> feature-movie-controller
         .anyRequest().authenticated();
     }
 }

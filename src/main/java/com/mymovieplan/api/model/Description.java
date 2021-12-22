@@ -6,8 +6,10 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name="description")
@@ -17,7 +19,8 @@ public class Description {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private final Long id;
 	
-	@ManyToOne(fetch=FetchType.LAZY)
+	@JsonIgnore
+	@OneToOne(fetch=FetchType.LAZY)
 	private Movie movie;
 	
 	@Column(name="description")
@@ -25,6 +28,7 @@ public class Description {
 
 	public Description() {
 		this.id = null;
+		this.description = "Default text";
 	}
 
 	public Description(Movie movie, String description) {
