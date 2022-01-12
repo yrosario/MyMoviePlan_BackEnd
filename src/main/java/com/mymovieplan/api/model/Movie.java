@@ -15,10 +15,6 @@ import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-<<<<<<< HEAD
-
-=======
->>>>>>> feature-movie-controller
 @Entity
 @Table(name="movie")
 public class Movie {
@@ -35,18 +31,17 @@ public class Movie {
 	@JsonIgnore
 	private List<CartItem> cartItems = new ArrayList<CartItem>();
 	
-<<<<<<< HEAD
+
 	@ManyToOne
 	private Category category;
-=======
+
 	@OneToMany(mappedBy="movie")
-	@JsonIgnore
 	private List<Image> images = new ArrayList<Image>();
 	
 	@OneToOne
 	@JsonIgnore
 	private Description description;
->>>>>>> feature-movie-controller
+
 	
 	@Column(name="movie_name")
 	private String movieName;
@@ -119,14 +114,14 @@ public class Movie {
 	}
 	
 
-<<<<<<< HEAD
 	public Category getCategory() {
 		return category;
 	}
 
 	public void setCategory(Category category) {
 		this.category = category;
-=======
+	}
+
 	public Description getDescription() {
 		return description;
 	}
@@ -142,7 +137,6 @@ public class Movie {
 
 	public void setImages(Image image) {
 		this.images.add(image);
->>>>>>> feature-movie-controller
 	}
 
 	@Override

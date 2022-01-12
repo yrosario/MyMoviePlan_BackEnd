@@ -37,6 +37,9 @@ public class User {
 	@JsonIgnore
 	private Cart cart;
 	
+	@Column(name="username")
+	private String username;
+	
 	@Column(name="first_name")
 	private String fName;
 	
@@ -72,7 +75,7 @@ public class User {
 	}
 
 	public User(String fName, String lName, String address, String city, String email, 
-			    Date birthday, String password, String role, Boolean active) {
+			    Date birthday, String password, String role, Boolean active, String username) {
 		this();
 		this.fName = fName;
 		this.lName = lName;
@@ -83,6 +86,7 @@ public class User {
 		this.password = password;
 		this.role = role;
 		this.active = active;
+		this.username = username;
 		
 	}
 
@@ -183,12 +187,23 @@ public class User {
 	}
 
 
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
 	@Override
 	public String toString() {
-		return "User [id=" + id + ", payments=" + payments + ", purchases=" + purchases + ", cart=" + cart + ", fName="
-				+ fName + ", lName=" + lName + ", address=" + address + ", city=" + city + ", email=" + email
-				+ ", birthday=" + birthday + ", password=" + password + ", role=" + role + ", active=" + active + "]";
+		return "User [id=" + id + ", payments=" + payments + ", purchases=" + purchases + ", cart=" + cart
+				+ ", username=" + username + ", fName=" + fName + ", lName=" + lName + ", address=" + address
+				+ ", city=" + city + ", email=" + email + ", birthday=" + birthday + ", password=" + password
+				+ ", role=" + role + ", active=" + active + "]";
 	}
+
+    
 	
 	
 	
