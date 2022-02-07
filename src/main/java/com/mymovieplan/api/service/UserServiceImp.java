@@ -129,7 +129,7 @@ public class UserServiceImp implements UserService, UserDetailsService {
 	    	throw new UsernameNotFoundException("User not found");
 	    
 	    Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
-	    authorities.add(new SimpleGrantedAuthority(user.getRole()));
+	    user.getRoles().stream().forEach(role -> { authorities.add(new SimpleGrantedAuthority(role.getName())); });
 	    
 		return new org.springframework.security.core.userdetails.User(user.getUsername(),user.getPassword(), authorities);
 	}

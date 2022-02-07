@@ -37,6 +37,9 @@ public class User {
 	@JsonIgnore
 	private Cart cart;
 	
+	@OneToMany(mappedBy="userRole", fetch=FetchType.LAZY)
+	private List<Role> roles = new ArrayList<>();
+	
 	@Column(name="username")
 	private String username;
 	
@@ -61,9 +64,6 @@ public class User {
 	@Column(name="password")
 	private String password;
 	
-	@Column(name="role")
-	private String role;
-	
 	@Column(name="active")
 	private Boolean active;
 
@@ -72,10 +72,11 @@ public class User {
 		active = true;
 		this.cart = new Cart();
 		this.cart.setCartUser(this);
+		this.roles = new ArrayList<>();
 	}
 
 	public User(String fName, String lName, String address, String city, String email, 
-			    Date birthday, String password, String role, Boolean active, String username) {
+			    Date birthday, String password, Role role, Boolean active, String username) {
 		this();
 		this.fName = fName;
 		this.lName = lName;
@@ -84,7 +85,7 @@ public class User {
 		this.email = email;
 		this.birthday = birthday;
 		this.password = password;
-		this.role = role;
+		this.roles.add(role);
 		this.active = active;
 		this.username = username;
 		
@@ -146,12 +147,12 @@ public class User {
 		this.password = password;
 	}
 
-	public String getRole() {
-		return role;
+	public List<Role> getRoles() {
+		return roles;
 	}
 
-	public void setRole(String role) {
-		this.role = role;
+	public void setRole(Role role) {
+		this.roles.add(role);
 	}
 
 	public Boolean getActive() {
@@ -200,7 +201,7 @@ public class User {
 		return "User [id=" + id + ", payments=" + payments + ", purchases=" + purchases + ", cart=" + cart
 				+ ", username=" + username + ", fName=" + fName + ", lName=" + lName + ", address=" + address
 				+ ", city=" + city + ", email=" + email + ", birthday=" + birthday + ", password=" + password
-				+ ", role=" + role + ", active=" + active + "]";
+				+ ", roles=" + roles + ", active=" + active + "]";
 	}
 
     

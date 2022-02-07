@@ -1,10 +1,15 @@
 package com.mymovieplan.api.controller;
 
 
+
+import java.io.IOException;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.stream.Collectors;
 
-
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,19 +24,29 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.interfaces.DecodedJWT;
+import com.auth0.jwt.interfaces.JWTVerifier;
 import com.mymovieplan.api.model.User;
+import com.mymovieplan.api.model.Role;
+import com.mymovieplan.api.service.RoleService;
 import com.mymovieplan.api.service.UserService;
 
 @RestController
 @RequestMapping("/user")
 public class UserController {
 	
+	private static final String AUTHORIZATION = "Authorization";
+
 	@Autowired
 	private BCryptPasswordEncoder bCryptPasswordEncoder;
 	
 	@Autowired
 	private UserService userService;
+	
+	@Autowired
+	private RoleService roleService;
 	
 	@GetMapping("/list")
 	public ResponseEntity<?> getUserList(){
@@ -51,6 +66,7 @@ public class UserController {
 		if(user == null)
 			return new ResponseEntity<>("No User Found", HttpStatus.OK);
 		
+		
 		return new ResponseEntity<>(user, HttpStatus.OK);
 	}
 	
@@ -59,6 +75,14 @@ public class UserController {
 		if(userService.findUserByUserName(user.getEmail()) != null)
 				return new ResponseEntity<>("User Already Exist", HttpStatus.CONFLICT);
 		
+		for(Role role: user.getRoles())
+		{
+			role.setUserRole(user);
+			roleService.save(role);
+		}
+		
+		user.getRoles().stream().forEach(role -> role.setUserRole(user));
+		 
 		userService.save(user);
 		return new ResponseEntity<>("User Has been Created", HttpStatus.CREATED);
 	}
@@ -69,6 +93,9 @@ public class UserController {
 		User retriveUser = userService.findUserById(user.getId());
 		if(retriveUser == null)
 			return new ResponseEntity<>("No User Found", HttpStatus.NOT_FOUND);
+		
+		if(!user.getRoles().isEmpty())
+			
 		
 		userService.save(user);
 		return new ResponseEntity<>(user, HttpStatus.OK);
@@ -116,5 +143,45 @@ public class UserController {
 		
 		return new ResponseEntity<>("User " + request.get("username") + "has been succesfully deleted", HttpStatus.OK );
 	}
+	
+	@GetMapping("/token/refresh")
+	public void refreshToken(HttpServletRequest request, HttpServletResponse response) throws IOException{
+		String authorizationHeader = request.getHeader(AUTHORIZATION);
+		if(authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
+			try {
+				String refreshToken = authorizationHeader.substring("Bearer ".length());
+				Algorithm algorithm = Algorithm.HMAC256("secret".getBytes());
+				JWTVerifier verifier = JWT.require(algorithm).build();
+				DecodedJWT decodedJWT = verifier.verify(refreshToken);
+				
+				
+				String username = decodedJWT.getSubject();
+				User user = userService.findUserByUserName(username);
+				
+				String accessToken = JWT.create().withSubject(user.getUsername())
+			             .withExpiresAt(new Date(System.currentTimeMillis() + 10 * 60 * 100))
+			             .withIssuer(request.getRequestURL().toString())
+			             .withClaim("roles", user.getRoles().stream().map(Role::getName).collect(Collectors.toList()))
+			             .sign(algorithm);
+	
+			   response.setHeader("access_token", accessToken);
+	           response.setHeader("refresh_token", refreshToken);
+	           
+	          
 
-}
+
+				
+			}catch(Exception e) {
+				response.setHeader("error", e.getMessage());
+				response.sendError(HttpStatus.FORBIDDEN.value());
+			}
+		}else {
+			throw new RuntimeException("Request token is missing");
+			}
+
+			
+		}
+		
+	}
+
+
