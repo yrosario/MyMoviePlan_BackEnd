@@ -11,6 +11,7 @@ public interface UserService {
 	
 	public User findUserByUserName(String username);
 	public User findUserById(Long id);
+	public Long findUserByUsername(String username);
 	public User save(User user);
 	public List<User> findAll();
 	public List<Purchase> findAllPurchases(Long id);

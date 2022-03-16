@@ -81,8 +81,8 @@ public class CartController {
 		return new ResponseEntity<>(movie, HttpStatus.OK);
 	}
 	
-	@DeleteMapping("/user/{id}")
-	public ResponseEntity<?> RemoveItemFromCart(@PathVariable("id") Long id, @RequestBody HashMap<String, Long> request){
+	@DeleteMapping("/user/{id}/item/{itemId}")
+	public ResponseEntity<?> RemoveItemFromCart(@PathVariable("id") Long id, @PathVariable("itemId") Long itemId){
 		User user = userService.findUserById(id);
 		if(user == null)
 			return new ResponseEntity<>("User not found", HttpStatus.NOT_FOUND);
@@ -92,12 +92,11 @@ public class CartController {
 			return new ResponseEntity<>("Cart not found", HttpStatus.NOT_FOUND);
 		
 		
-		Long cartId = request.get("cartId");
 		
-		if(cartId == null)
+		if(itemId == null)
 			return new ResponseEntity<>("Invalid data passed", HttpStatus.BAD_REQUEST);
 		
-		cartService.removeCartItemById(cartId,cart);
+		cartService.removeCartItemById(itemId,cart);
 		
 		
 		return new ResponseEntity<>("Sucecss", HttpStatus.OK);

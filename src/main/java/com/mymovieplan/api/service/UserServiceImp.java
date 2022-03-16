@@ -43,7 +43,7 @@ public class UserServiceImp implements UserService, UserDetailsService {
 			
 		
 		for(User user : users)
-			if(user.getEmail().equalsIgnoreCase(username))
+			if(user.getUsername().equalsIgnoreCase(username))
 				return user;
 		
 		return null;
@@ -132,6 +132,20 @@ public class UserServiceImp implements UserService, UserDetailsService {
 	    user.getRoles().stream().forEach(role -> { authorities.add(new SimpleGrantedAuthority(role.getName())); });
 	    
 		return new org.springframework.security.core.userdetails.User(user.getUsername(),user.getPassword(), authorities);
+	}
+
+	@Override
+	public Long findUserByUsername(String username) {
+		List<User> users = userRepository.findAll();
+		if(users == null) {
+			return -1L;
+		}
+		for(User user : users) {
+			if(username.equals(user.getUsername())) {
+				return user.getId();
+			}
+		}
+		return -1L;
 	}
 
 

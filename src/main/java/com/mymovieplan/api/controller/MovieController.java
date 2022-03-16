@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -91,9 +92,8 @@ public class MovieController {
 		return new ResponseEntity<>(movie, HttpStatus.OK);
 		}
 	
-	@DeleteMapping("/delete")
-	public ResponseEntity<?> deleteMovie(@RequestBody HashMap<String, Long> request){
-		Long id = request.get("id");
+	@DeleteMapping("/{id}")
+	public ResponseEntity<?> deleteMovie(@PathVariable("id") Long id){
 		Movie movie = movieService.findMovieById(id);
 		if(movie == null)
 			return new ResponseEntity<>("Movie not found", HttpStatus.BAD_REQUEST);
