@@ -61,13 +61,28 @@ public class UserController {
 		
 	}
 	
-	@GetMapping("/{username}")
+	@GetMapping("/us/{username}")
 	public ResponseEntity<?> getUser(@PathVariable("username") String username){
 		
 		User user = userService.findUserByUserName(username);
 		if(user == null)
 			return new ResponseEntity<>("No User Found", HttpStatus.NO_CONTENT);
 		
+		
+		return new ResponseEntity<>(user, HttpStatus.OK);
+	}
+	
+	@GetMapping("/{id}")
+	public ResponseEntity<?> getUserbyId(@PathVariable("id") Long id){
+		
+		if(id == null) {
+			return new ResponseEntity<>("Bad parameter ", HttpStatus.BAD_REQUEST);
+		}
+		
+		User user = userService.findUserById(id);
+		if(user == null) {
+			return new ResponseEntity<>("No user found", HttpStatus.NO_CONTENT);
+		}
 		
 		return new ResponseEntity<>(user, HttpStatus.OK);
 	}
@@ -135,15 +150,15 @@ public class UserController {
 		
 	}
 	
-	@DeleteMapping("/delete")
-	public ResponseEntity<String> deleteUser(@RequestBody HashMap<String, String> request){
-		User user = userService.findUserByUserName(request.get("username"));
+	@DeleteMapping("/{id}")
+	public ResponseEntity<String> deleteUser(@PathVariable("id") Long id){
+		User user = userService.findUserById(id);
 		if(user == null)
-			return new ResponseEntity<>("User " + request.get("username") + "was not found", HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>("User " + "user with id " + id + "was not found", HttpStatus.BAD_REQUEST);
 		
-		userService.deleteUser(request.get("username"));
+		userService.deleteUserById(id);
 		
-		return new ResponseEntity<>("User " + request.get("username") + "has been succesfully deleted", HttpStatus.OK );
+		return new ResponseEntity<>("User username wit id " + id + "has been succesfully deleted", HttpStatus.OK );
 	}
 	
 	@GetMapping("/token/refresh")

@@ -63,7 +63,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
     	http.authorizeRequests().antMatchers(HttpMethod.POST, "/cart/**").permitAll();
     	http.authorizeRequests().antMatchers(HttpMethod.PUT, "/cart/**").permitAll();
     	http.authorizeRequests().antMatchers(HttpMethod.DELETE, "/cart/**").permitAll();
-    	http.authorizeRequests().antMatchers(HttpMethod.DELETE, "/user/**").hasAnyAuthority("ROLE_USER");
+    	http.authorizeRequests().antMatchers(HttpMethod.DELETE, "/user/**").permitAll();
     	http.authorizeRequests().antMatchers(HttpMethod.GET, "/**").hasAnyAuthority("ROLE_ADMIN");
     	http.authorizeRequests().antMatchers(HttpMethod.POST, "/**").hasAnyAuthority("ROLE_ADMIN");
     	http.authorizeRequests().antMatchers(HttpMethod.PUT, "/**").hasAnyAuthority("ROLE_ADMIN");

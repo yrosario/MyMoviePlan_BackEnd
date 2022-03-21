@@ -18,6 +18,7 @@ public interface UserService {
 	public List<CartItem> findAllCartItems(Long id);
 	public void updateUserPassword(User user, String newPassword);
 	public void deleteUser(String username);
+	public void deleteUserById(Long id);
 	public Payment findPaymentById(Long paymentId, List<Payment> payments);
 
 }

@@ -37,7 +37,7 @@ public class User {
 	@JsonIgnore
 	private Cart cart;
 	
-	@OneToMany(mappedBy="userRole", fetch=FetchType.LAZY)
+	@OneToMany(mappedBy="userRole",cascade = {CascadeType.ALL}, fetch=FetchType.LAZY)
 	private List<Role> roles = new ArrayList<>();
 	
 	@Column(name="username")

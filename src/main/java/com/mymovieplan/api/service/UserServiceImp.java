@@ -148,6 +148,13 @@ public class UserServiceImp implements UserService, UserDetailsService {
 		return -1L;
 	}
 
+	@Override
+	public void deleteUserById(Long id) {
+		
+		userRepository.deleteById(id);
+		
+	}
+
 
 	
 	
