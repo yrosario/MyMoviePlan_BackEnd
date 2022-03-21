@@ -20,7 +20,8 @@ public class Category {
 		private final Long id;
 		
 		@OneToMany(mappedBy = "category")
-		private List<Movie> movies;
+		private List<CategoryItem> categoryItems;
+		
 		
 		@Column(name="category_name")
 		private String categoryName;
@@ -31,16 +32,16 @@ public class Category {
 
 		public Category(Movie movie, String categoryName) {
 			this();
-			this.movies = new ArrayList<Movie>();
+			this.categoryItems = new ArrayList<CategoryItem>();
 			this.categoryName = categoryName;
 		}
 
-		public List<Movie> getMovies() {
-			return movies;
+		public List<CategoryItem> getCategoryItems() {
+			return categoryItems;
 		}
 
-		public void setMovie(Movie movie) {
-			this.movies.add(movie);
+		public void setCategoryItem(CategoryItem categoryItem) {
+			this.categoryItems.add(categoryItem);
 		}
 
 		public String getCategoryName() {
@@ -57,7 +58,7 @@ public class Category {
 
 		@Override
 		public String toString() {
-			return "Category [id=" + id + ", movie=" + movies + ", categoryName=" + categoryName + "]";
+			return "Category [id=" + id + "categoryName=" + categoryName + "]";
 		}
 				
 		

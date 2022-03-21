@@ -34,7 +34,7 @@ public class Movie {
 	
 
 	@ManyToOne
-	private Category category;
+	private CategoryItem categoryItem;
 
 	@OneToMany(mappedBy="movie", cascade = CascadeType.ALL)
 	@JsonIgnore
@@ -116,12 +116,12 @@ public class Movie {
 	}
 	
 
-	public Category getCategory() {
-		return category;
+	public CategoryItem getCategoryItem() {
+		return categoryItem;
 	}
 
-	public void setCategory(Category category) {
-		this.category = category;
+	public void setCategoryItem(CategoryItem category) {
+		this.categoryItem = category;
 	}
 
 	public Description getDescription() {
