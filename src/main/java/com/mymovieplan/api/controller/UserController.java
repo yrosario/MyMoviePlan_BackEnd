@@ -92,15 +92,26 @@ public class UserController {
 		if(userService.findUserByUserName(user.getEmail()) != null)
 				return new ResponseEntity<>("User Already Exist", HttpStatus.CONFLICT);
 		
+		if(userService.findUserByUserName(user.getUsername()) != null)
+			return new ResponseEntity<>("User Already Exist", HttpStatus.CONFLICT);
+		
+		//List<Role> roles = user.getRoles();
+		
+		//user.setAllRole(null);
+		
+		/*
 		for(Role role: user.getRoles())
 		{
-			role.setUserRole(user);
+			//role.setUserRole(user);
 			roleService.save(role);
-		}
+		}*/
 		
-		user.getRoles().stream().forEach(role -> role.setUserRole(user));
+		//user.getRoles().stream().forEach(role -> user.setRole(role));
 		 
 		userService.save(user);
+		//user.setAllRole(roles);
+		//userService.save(user);
+		
 		return new ResponseEntity<>("User Has been Created", HttpStatus.CREATED);
 	}
 	
@@ -198,6 +209,22 @@ public class UserController {
 
 			
 		}
+	
+	
+	
+	
+	@GetMapping("/role")
+	public ResponseEntity<?> getRoles(){
+		
+		List<Role> roles = roleService.findAll();
+		if(roles == null) {
+			return new ResponseEntity<>("No roles found", HttpStatus.NO_CONTENT);
+		}
+		
+		
+		return new ResponseEntity<>(roles, HttpStatus.OK);
+	}
+	
 		
 	}
 

@@ -24,9 +24,6 @@ public class Role {
 	@Column(name="role_name")
 	private String roleName;
 	
-	@OneToOne(fetch=FetchType.EAGER, cascade=CascadeType.ALL)
-	@JsonIgnore
-	private User userRole;
 	
 	public Role() {
 		this.id = null;
@@ -49,17 +46,10 @@ public class Role {
 		return id;
 	}
 
-	public User getUserRole() {
-		return userRole;
-	}
-
-	public void setUserRole(User user) {
-		this.userRole = user;
-	}
 
 	@Override
 	public String toString() {
-		return "Role [id=" + id + ", name=" + roleName + ", userRole=" + userRole + "]";
+		return "Role [id=" + id + ", name=" + roleName + "]";
 	}
 	
 	

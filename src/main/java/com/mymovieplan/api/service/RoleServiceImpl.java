@@ -1,5 +1,7 @@
 package com.mymovieplan.api.service;
 
+import java.util.List;
+
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +25,12 @@ public class RoleServiceImpl implements RoleService {
 	@Override
 	public Role findById(Long id) {
 		return roleRepository.getById(id);
+	}
+
+	@Override
+	public List<Role> findAll() {
+		return roleRepository.findAll();
+		
 	}
 
 }

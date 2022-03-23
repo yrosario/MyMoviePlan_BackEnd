@@ -6,7 +6,7 @@ INSERT INTO movie( movie_name, duration, price)
 VALUES( "Matrix", 230, 20.0);
 
 INSERT INTO role(id, role_name )
-VALUES(1, "ADMIN");
+VALUES(1, "ROLE_ADMIN");
 
 INSERT INTO role(id, role_name )
-VALUES(2, "USER");
+VALUES(2, "ROLE_USER");

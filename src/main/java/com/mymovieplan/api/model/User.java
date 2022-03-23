@@ -11,6 +11,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -37,7 +38,7 @@ public class User {
 	@JsonIgnore
 	private Cart cart;
 	
-	@OneToMany(mappedBy="userRole",cascade = {CascadeType.ALL}, fetch=FetchType.LAZY)
+	@ManyToMany(fetch=FetchType.EAGER)
 	private List<Role> roles = new ArrayList<>();
 	
 	@Column(name="username")
@@ -153,6 +154,11 @@ public class User {
 
 	public void setRole(Role role) {
 		this.roles.add(role);
+	}
+	
+
+	public void setAllRole(List<Role> roles) {
+		this.roles = roles;
 	}
 
 	public Boolean getActive() {
