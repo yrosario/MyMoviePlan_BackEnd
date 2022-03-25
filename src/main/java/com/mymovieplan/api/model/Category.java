@@ -1,14 +1,12 @@
 package com.mymovieplan.api.model;
 
-import java.util.ArrayList;
-import java.util.List;
+
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -19,8 +17,6 @@ public class Category {
 		@GeneratedValue(strategy = GenerationType.AUTO)
 		private final Long id;
 		
-		@OneToMany(mappedBy = "category")
-		private List<CategoryItem> categoryItems;
 		
 		
 		@Column(name="category_name")
@@ -31,18 +27,10 @@ public class Category {
 		}
 
 		public Category(Movie movie, String categoryName) {
-			this();
-			this.categoryItems = new ArrayList<CategoryItem>();
+			this();;
 			this.categoryName = categoryName;
 		}
 
-		public List<CategoryItem> getCategoryItems() {
-			return categoryItems;
-		}
-
-		public void setCategoryItem(CategoryItem categoryItem) {
-			this.categoryItems.add(categoryItem);
-		}
 
 		public String getCategoryName() {
 			return categoryName;

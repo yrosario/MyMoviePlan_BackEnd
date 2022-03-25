@@ -10,3 +10,12 @@ VALUES(1, "ROLE_ADMIN");
 
 INSERT INTO role(id, role_name )
 VALUES(2, "ROLE_USER");
+
+INSERT INTO category(id, category_name )
+VALUES(1, "ACTION");
+
+INSERT INTO category(id, category_name )
+VALUES(2, "DRAMA");
+
+INSERT INTO category(id, category_name )
+VALUES(3, "SUSPENCE");

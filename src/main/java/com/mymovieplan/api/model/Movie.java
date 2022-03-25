@@ -6,10 +6,11 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -33,15 +34,14 @@ public class Movie {
 	private List<CartItem> cartItems = new ArrayList<CartItem>();
 	
 
-	@ManyToOne
-	private CategoryItem categoryItem;
+	@ManyToMany(fetch=FetchType.EAGER)
+	private List<Category> categories = new ArrayList<>();
 
 	@OneToMany(mappedBy="movie", cascade = CascadeType.ALL)
 	@JsonIgnore
 	private List<Image> images = new ArrayList<Image>();
 	
 	@OneToOne(cascade = CascadeType.ALL)
-	@JsonIgnore
 	private Description description;
 
 	
@@ -57,13 +57,16 @@ public class Movie {
 	public Movie() {
 		this.id = null;
 		this.description = new Description();
+		//this.categories = new ArrayList<Category>();
 	}
 
-	public Movie(String movieName, Integer duration, Float price) {
+	public Movie(String movieName, Integer duration, Float price, Category category) {
 		this();
 		this.movieName = movieName;
 		this.duration = duration;
 		this.price = price;
+		this.categories.add(category);
+		
 	}
 
 	public String getMovieName() {
@@ -116,14 +119,6 @@ public class Movie {
 	}
 	
 
-	public CategoryItem getCategoryItem() {
-		return categoryItem;
-	}
-
-	public void setCategoryItem(CategoryItem category) {
-		this.categoryItem = category;
-	}
-
 	public Description getDescription() {
 		return description;
 	}
@@ -139,6 +134,14 @@ public class Movie {
 
 	public void setImages(Image image) {
 		this.images.add(image);
+	}
+	
+	public List<Category> getCategories() {
+		return categories;
+	}
+
+	public void setCategories(Category category) {
+		this.categories.add(category);
 	}
 
 	@Override

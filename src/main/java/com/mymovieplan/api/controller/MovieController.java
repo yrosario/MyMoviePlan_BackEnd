@@ -20,9 +20,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.mymovieplan.api.model.Category;
 import com.mymovieplan.api.model.Description;
 import com.mymovieplan.api.model.Image;
 import com.mymovieplan.api.model.Movie;
+import com.mymovieplan.api.service.CategoryService;
 import com.mymovieplan.api.service.DescriptionService;
 import com.mymovieplan.api.service.ImageService;
 import com.mymovieplan.api.service.MovieService;
@@ -40,6 +42,9 @@ public class MovieController {
 	
 	@Autowired
 	private ImageService imageService;
+	
+	@Autowired
+	private CategoryService categoryService;
 
 	
 	@GetMapping("/list")
@@ -191,6 +196,30 @@ public class MovieController {
 		byte[] encodeImg = images.get(0).getImage();
 		return ResponseEntity.ok().contentType(MediaType.IMAGE_JPEG).body(encodeImg);
     	
+    }
+    
+    @GetMapping("/category")
+    public ResponseEntity<?> getCategory(){
+    	
+    	List<Category> categories = categoryService.findAll();
+    	
+    	if(categories == null) {
+    		return new ResponseEntity<>("list is empty", HttpStatus.NO_CONTENT);
+    	}
+    	
+    	return new ResponseEntity<>(categories, HttpStatus.OK);
+    }
+    
+    @GetMapping("/category/{id}")
+    public ResponseEntity<?> getCategory(@PathVariable("id") Long id){
+    	
+    	Category category = categoryService.findById(id);
+    	
+    	if(category == null) {
+    		return new ResponseEntity<>("category not found", HttpStatus.NO_CONTENT);
+    	}
+    	
+    	return new ResponseEntity<>(category, HttpStatus.OK);
     }
 
 }
